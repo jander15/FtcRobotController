@@ -49,7 +49,7 @@ import com.qualcomm.robotcore.util.Range;
  * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list
  */
 
-@TeleOp(name="Basic: Intro", group="Iterative Opmode")
+@TeleOp(name="Josh: TeleOp", group="Iterative Opmode")
 //@Disabled
 public class BasicOpModeIntro extends OpMode
 {
@@ -76,10 +76,10 @@ public class BasicOpModeIntro extends OpMode
 
         // Most robots need the motor on one side to be reversed to drive forward
         // Reverse the motors that run backwards when connected directly to the battery
-        leftFront.setDirection(DcMotor.Direction.FORWARD);
-        leftRear.setDirection(DcMotor.Direction.FORWARD);
-        rightFront.setDirection(DcMotor.Direction.REVERSE);
-        rightRear.setDirection(DcMotor.Direction.REVERSE);
+        leftFront.setDirection(DcMotor.Direction.REVERSE);
+        leftRear.setDirection(DcMotor.Direction.REVERSE);
+        rightFront.setDirection(DcMotor.Direction.FORWARD);
+        rightRear.setDirection(DcMotor.Direction.FORWARD );
 
         leftFront.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         leftRear.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
@@ -112,24 +112,32 @@ public class BasicOpModeIntro extends OpMode
     @Override
     public void loop() {
         // Setup a variable for each drive wheel to save power level for telemetry
-        double leftPower;
-        double rightPower;
+        double frontLeftPower;
+        double frontRightPower;
+        double backLeftPower;
+        double backRightPower;
 
         // POV Mode uses left stick to go forward, and right stick to turn.
-        double drive = -gamepad1.left_stick_y;
+        double drive =  gamepad1.left_stick_y;
+        double strafe = gamepad1.left_stick_x;
         double turn  =  gamepad1.right_stick_x;
-        leftPower    = Range.clip(drive + turn, -1.0, 1.0) ;
-        rightPower   = Range.clip(drive - turn, -1.0, 1.0) ;
+
+        frontLeftPower    = Range.clip(drive+turn+strafe, -1.0, 1.0) ;
+        frontRightPower   = Range.clip(drive-turn-strafe, -1.0, 1.0) ;
+        backLeftPower    = Range.clip(drive+turn-strafe, -1.0, 1.0) ;
+        backRightPower   = Range.clip(drive-turn +strafe, -1.0, 1.0) ;
 
         // Send calculated power to wheels
-        leftFront.setPower(leftPower);
-        leftRear.setPower(leftPower);
-        rightFront.setPower(rightPower);
-        rightRear.setPower(rightPower);
+        leftFront.setPower(frontLeftPower);
+        leftRear.setPower(backLeftPower);
+        rightFront.setPower(frontRightPower);
+        rightRear.setPower(backRightPower);
 
         // Show the elapsed game time and wheel power.
         telemetry.addData("Status", "Run Time: " + runtime.toString());
-        telemetry.addData("Motors", "left (%.2f), right (%.2f)", leftPower, rightPower);
+        telemetry.addData("Front Motors", "leftFront (%.2f), rightFront (%.2f)", frontLeftPower, frontRightPower);
+        telemetry.addData("Back Motors", "leftBack (%.2f), rightBack (%.2f)", backLeftPower, backRightPower);
+
     }
 
     /*
