@@ -1,0 +1,28 @@
+//command type {double Speed, double Direction, double Distance, double Angle, double Time}
+Speed from -1.0 to 1.0 with 1.0 being 100% speed and -1.0 being 100% in reverce.
+Direction is used in OBM to diside wich way the motor rotates.
+Distance is in cm as a double so 12.0 or 1.0 must include .0 or a single decimle place
+Angle only used in reotations and this is used with triginometry in a lower leavle to calculate how far the moter have to rotate.
+
+//newOBM motorName
+creates new OBM
+//motorName{double Speed, double Direction, double Distance, double Angle, double Time}
+uses OBM
+
+all perameters must be filled out but if not needed for the command or task leave a zero.
+command type examples are StraitMotion, Rotate, Strafe
+
+newOBM creates a new motor to be used and OBM stands for on bot mechanich
+
+examples
+
+//StraitMotion{1.0,0.0,20.0,0.0,0.0}
+Moves robot 20 cm at 100% speed.
+
+
+Example
+
+newOBM,FlyWheel2,FlyWheel2
+StraitMotion,1.0,0.0,20.0,0.0,0.0
+Rotate,1.0,0.0,0.0,90.0,0.0
+runOBM,FlyWheel,1.0,1.0,0.0,0.0,100.0
